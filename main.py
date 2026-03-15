@@ -1,32 +1,63 @@
 import os
+import asyncio
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 
 TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 
+usuarios = set()
+
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("Hola! Soy tu bot de ofertas.")
+    user_id = update.message.chat_id
+    usuarios.add(user_id)
+    await update.message.reply_text("Hola! Te enviaré ofertas cuando estén disponibles.")
 
 async def ofertas(update: Update, context: ContextTypes.DEFAULT_TYPE):
     mensaje = """
 🔥 OFERTAS DEL DIA 🔥
 
-1️⃣ Falabella
+🛍️ Falabella
 https://www.falabella.com/falabella-cl
 
-2️⃣ ripley
+🛍️ Ripley
 https://simple.ripley.cl/
 
-3️⃣ Solo todo
+💻 SoloTodo
 https://www.solotodo.cl/
 """
     await update.message.reply_text(mensaje)
 
-app = ApplicationBuilder().token(TOKEN).build()
+async def enviar_ofertas(application):
+    while True:
+        mensaje = """
+🔥 OFERTAS DEL DIA 🔥
 
-app.add_handler(CommandHandler("start", start))
-app.add_handler(CommandHandler("ofertas", ofertas))
+🛍️ Falabella
+https://www.falabella.com/falabella-cl
 
-print("Bot funcionando...")
+🛍️ Ripley
+https://simple.ripley.cl/
 
-app.run_polling()
+💻 SoloTodo
+https://www.solotodo.cl/
+"""
+        for user_id in usuarios:
+            try:
+                await application.bot.send_message(chat_id=user_id, text=mensaje)
+            except:
+                pass
+
+        await asyncio.sleep(86400)  # 24 horas
+
+async def main():
+    app = ApplicationBuilder().token(TOKEN).build()
+
+    app.add_handler(CommandHandler("start", start))
+    app.add_handler(CommandHandler("ofertas", ofertas))
+
+    asyncio.create_task(enviar_ofertas(app))
+
+    print("Bot funcionando...")
+    await app.run_polling()
+
+asyncio.run(main())
