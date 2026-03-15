@@ -1,5 +1,4 @@
 import os
-import asyncio
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 
@@ -10,7 +9,7 @@ usuarios = set()
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.message.chat_id
     usuarios.add(user_id)
-    await update.message.reply_text("Hola! Te enviaré ofertas cuando estén disponibles.")
+    await update.message.reply_text("Hola! Soy tu bot de ofertas.")
 
 async def ofertas(update: Update, context: ContextTypes.DEFAULT_TYPE):
     mensaje = """
@@ -27,37 +26,11 @@ https://www.solotodo.cl/
 """
     await update.message.reply_text(mensaje)
 
-async def enviar_ofertas(application):
-    while True:
-        mensaje = """
-🔥 OFERTAS DEL DIA 🔥
+app = ApplicationBuilder().token(TOKEN).build()
 
-🛍️ Falabella
-https://www.falabella.com/falabella-cl
+app.add_handler(CommandHandler("start", start))
+app.add_handler(CommandHandler("ofertas", ofertas))
 
-🛍️ Ripley
-https://simple.ripley.cl/
+print("Bot funcionando...")
 
-💻 SoloTodo
-https://www.solotodo.cl/
-"""
-        for user_id in usuarios:
-            try:
-                await application.bot.send_message(chat_id=user_id, text=mensaje)
-            except:
-                pass
-
-        await asyncio.sleep(86400)  # 24 horas
-
-async def main():
-    app = ApplicationBuilder().token(TOKEN).build()
-
-    app.add_handler(CommandHandler("start", start))
-    app.add_handler(CommandHandler("ofertas", ofertas))
-
-    asyncio.create_task(enviar_ofertas(app))
-
-    print("Bot funcionando...")
-    await app.run_polling()
-
-asyncio.run(main())
+app.run_polling()
