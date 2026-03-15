@@ -11,14 +11,14 @@ async def ofertas(update: Update, context: ContextTypes.DEFAULT_TYPE):
     mensaje = """
 🔥 OFERTAS DEL DIA 🔥
 
-1️⃣ Audífonos Bluetooth
-https://ejemplo.com
+1️⃣ Falabella
+https://www.falabella.com/falabella-cl
 
-2️⃣ Teclado Gamer
-https://ejemplo.com
+2️⃣ ripley
+https://simple.ripley.cl/
 
-3️⃣ Mouse Gamer
-https://ejemplo.com
+3️⃣ Solo todo
+https://www.solotodo.cl/
 """
     await update.message.reply_text(mensaje)
 
