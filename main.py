@@ -3,7 +3,8 @@ from telegram import Update, ReplyKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes
 
 TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
-CANAL_ID = -1003797588613
+
+CANAL_ID = -1003797588613  # aquí pon el ID de tu canal
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     teclado = [
@@ -14,7 +15,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     reply_markup = ReplyKeyboardMarkup(teclado, resize_keyboard=True)
 
     await update.message.reply_text(
-        "Bienvenido al Bot de Ofertas 👋\nSelecciona una opción:",
+        "Bienvenido al Bot de Ofertas 👋",
         reply_markup=reply_markup
     )
 
@@ -35,7 +36,7 @@ https://simple.ripley.cl/
 https://www.solotodo.cl/
 """
         await update.message.reply_text(mensaje)
-        
+
 async def publicar(update: Update, context: ContextTypes.DEFAULT_TYPE):
     mensaje = """
 🔥 OFERTA
@@ -51,27 +52,6 @@ https://www.solotodo.cl/
 """
     await context.bot.send_message(chat_id=CANAL_ID, text=mensaje)
     await update.message.reply_text("Oferta publicada en el canal ✅")
-
-    elif texto == "🛍️ Tiendas":
-        mensaje = """
-🛍️ TIENDAS
-
-Falabella  
-https://www.falabella.com
-
-Ripley  
-https://simple.ripley.cl
-"""
-        await update.message.reply_text(mensaje)
-
-    elif texto == "💻 Tecnología":
-        mensaje = """
-💻 TECNOLOGÍA
-
-SoloTodo  
-https://www.solotodo.cl
-"""
-        await update.message.reply_text(mensaje)
 
 app = ApplicationBuilder().token(TOKEN).build()
 
