@@ -46,6 +46,40 @@ https://www.solotodo.cl/
             disable_web_page_preview=True
         )
 
+    elif texto == "🛍️ Tiendas":
+
+        mensaje = """
+🛍️ TIENDAS
+
+Falabella
+https://www.falabella.com
+
+Ripley
+https://simple.ripley.cl
+"""
+
+        await update.message.reply_text(
+            mensaje,
+            disable_web_page_preview=True
+        )
+
+    elif texto == "💻 Tecnología":
+
+        mensaje = """
+💻 OFERTA TECNOLOGÍA
+
+🖱️ Mouse Gamer Logitech G203
+💰 Precio aprox: $9.990
+
+💻 Comparar precios
+https://www.solotodo.cl/products/6901-logitech-g203-lightsync-black
+"""
+
+        await update.message.reply_text(
+            mensaje,
+            disable_web_page_preview=True
+        )
+
 
 async def publicar(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
@@ -71,7 +105,7 @@ https://www.solotodo.cl/
     await update.message.reply_text("Oferta publicada en el canal ✅")
 
 
-# PUBLICACIÓN AUTOMÁTICA
+# PUBLICACIÓN AUTOMÁTICA CADA 1 HORA
 async def ofertas_automaticas(context: ContextTypes.DEFAULT_TYPE):
 
     mensaje = """
@@ -103,7 +137,7 @@ def main():
 
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, manejar_mensaje))
 
-    # PUBLICAR CADA 1 HORA
+    # PUBLICAR CADA 1 HORA (3600 segundos)
     app.job_queue.run_repeating(ofertas_automaticas, interval=3600, first=10)
 
     print("Bot funcionando...")
